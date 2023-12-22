@@ -14,7 +14,7 @@
 
 **Stop**
 
-- Group your clusters and services as shown below making for example **STOP_CLUSTER_1** is grouped with **STOP_SERVICES_1**. Note the **\_1** is same for a group, increment the number for another group.
+- Group your clusters and services as shown below, for example **STOP_CLUSTER_1** is grouped with **STOP_SERVICES_1**. Note the **\_1** is same for a group, increment the number for another group.
   > STOP_CLUSTER_1=test-cluster-1
   >
   > STOP_SERVICES_1=["service-test-1", "service-test-2"]
