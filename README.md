@@ -22,7 +22,7 @@
   - `python stop.py`
 - Another option of running the stop script on the terminal
   - `python stop.py --cluster cluster1 --services service1 service2 service3` or
-  - `python stop.py --c cluster1 --s service1 service2 service3`
+  - `python stop.py -c cluster1 -s service1 service2 service3`
     - **_Note_** This will take precedence over the env file
 
 ---
