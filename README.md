@@ -37,3 +37,36 @@
   > DESIRED_COUNTS_CLUSTER_1={"service-test-1": 1, "service-test-2": 1}
 - Running the start script
   - `python start.py`
+
+# START_V1 and STOP_V1
+
+A more streamlined revision of the scripts - the env is simpler to work with as you only have to defined the variables in one list
+
+```python
+CLUSTERS='[
+    {
+        "name": "cluster1",
+        "services": {
+            "service1": 2,
+            "service2": 1
+        }
+    },
+    {
+        "name": "cluster2",
+        "services": {
+            "service1": 3,
+            "service2": 4,
+            "service3": 2,
+        }
+    },
+    {
+        "name": "cluster3",
+        "services": {
+            "service1": 2,
+            "service2": 5,
+            "service3": 3,
+        }
+    }
+]'
+
+```
