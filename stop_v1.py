@@ -5,6 +5,7 @@ import logging
 import sys
 import signal
 import time
+import argparse
 import traceback
 from dotenv import load_dotenv
 
@@ -25,7 +26,7 @@ def update_services(cluster_name:str, service_counts: list[str]) -> None:
                 desiredCount=desired_count,
             )
             logger.info(f"Service {service_name} in cluster {cluster_name} stopped successfully.")
-            time.sleep(1)
+            time.sleep(2)
         except ecs_client.exceptions.ServiceNotFoundException:
             logger.error(f"Service {service_name} not found in cluster {cluster_name}")
         except ecs_client.exceptions.ClientError as e:
@@ -41,11 +42,25 @@ def handle_exit(signum, frame):
 
 signal.signal(signal.SIGINT, handle_exit)
 
+def parse_command_line_args():
+    parser = argparse.ArgumentParser(description='Start ECS services with desired count based on groups.')
+    parser.add_argument('-c', '--cluster', required=False, help='Name of the ECS cluster')
+    parser.add_argument('-s', '--services', nargs='+', required=False, help='List of ECS service names')
+
+    return parser.parse_args()
+
 if __name__ == '__main__':
+    args = parse_command_line_args()
+
     clusters = json.loads(os.getenv("CLUSTERS", "[]"))
 
     for cluster in clusters:
         service_counts = cluster["services"]
-        update_services(cluster["name"], service_counts)
+        if clusters and not (args.cluster and args.services):
+            update_services(cluster["name"], service_counts)
+        elif args.cluster and args.services:
+            update_services(cluster["name"], service_counts)
+        else:
+            print("No valid input provided. Please specify cluster and services.")
 
-    print("\n Services stopped successfully.")
+    print("\n Operation finished")

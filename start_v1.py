@@ -24,7 +24,7 @@ def update_services(cluster_name: str, service_counts: dict[str, int]) -> None:
                 desiredCount=desired_count,
             )
             logger.info(f"Service {service_name} updated in cluster {cluster_name} to {desired_count} tasks.")
-            time.sleep(1)
+            time.sleep(2)
         except ecs_client.exceptions.ServiceNotFoundException:
             logger.error(f"Service not found in cluster {cluster_name}")
         except ecs_client.exceptions.ClientError as e:
@@ -47,4 +47,4 @@ if __name__ == "__main__":
         service_counts = cluster["services"]
         update_services(cluster["name"], service_counts)
 
-    print("\n Services updated successfully.")
+    print("\n Operation finished.")
