@@ -53,7 +53,7 @@ CLUSTERS='[
 
 ```
 
-# This is for stop.py and start.py **_Dont use this!!!_**
+# This below is for stop.py and start.py **_Dont use this!!!_**
 
 **Stop**
 
