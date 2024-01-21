@@ -6,6 +6,7 @@ import logging
 import signal
 import traceback
 from dotenv import load_dotenv
+from colorama import Fore, Style
 
 load_dotenv()
 
@@ -37,7 +38,7 @@ def stop_services_by_tags(tags: list[dict]) -> None:
                     service=service_name,
                     desiredCount=0,
                 )
-                logger.info(f"Service {service_name} in cluster {cluster_arn} stopped (desired count set to 0).")
+                logger.info(f"{Fore.RED}Service {service_name} in cluster {cluster_arn} stopped (desired count set to 0).{Style.RESET_ALL}")
 
     except ecs_client.exceptions.ClientError as e:
         error_message = e.response.get('Error', {}).get('Message')
@@ -71,4 +72,4 @@ if __name__ == "__main__":
 
     stop_services_by_tags(tags)
 
-    print("\nOperation finished! 🙌")
+    print("\nOperation ended! 🙌")

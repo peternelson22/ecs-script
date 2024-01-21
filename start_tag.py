@@ -6,6 +6,7 @@ import sys
 import signal
 import traceback
 from dotenv import load_dotenv
+from colorama import Fore, Style
 
 load_dotenv()
 
@@ -34,7 +35,7 @@ def start_services_by_tags(clusters: list[dict]) -> None:
 
                 cluster_tags_response = ecs_client.list_tags_for_resource(resourceArn=cluster_arn)
                 cluster_tags = {tag['key']: tag['value'] for tag in cluster_tags_response.get('tags', {})}
-                logger.info(f"Cluster {cluster_arn} tags: {cluster_tags.get(tag_key)}")
+                logger.info(f"{Fore.CYAN}Cluster {cluster_arn} with tag value: {cluster_tags.get(tag_key)}{Style.RESET_ALL}")
 
                 services_arns = ecs_client.list_services(cluster=cluster_arn).get('serviceArns', [])
 
@@ -43,7 +44,6 @@ def start_services_by_tags(clusters: list[dict]) -> None:
 
                     service_tags_response = ecs_client.list_tags_for_resource(resourceArn=service_arn)
                     service_tags = {tag['key']: tag['value'] for tag in service_tags_response.get('tags', {})}
-                    logger.info(f"Service {service_name} tags: {service_tags}")
 
                     for service_tag_value in service_tags.values():
                         if service_tag_value is not None:
@@ -54,9 +54,10 @@ def start_services_by_tags(clusters: list[dict]) -> None:
                                 service=service_name,
                                 desiredCount=desired_count,
                             )
-                            logger.info(f"Service {service_name} in cluster {cluster_arn} started (desired count set to {desired_count}).\n")
+                            if desired_count != 0:
+                                logger.info(f"{Fore.GREEN}Service {service_name} in cluster {cluster_arn} started (desired count set to {desired_count}).{Style.RESET_ALL}\n")
                         else:
-                            logger.warning(f"Tag value {service_tag_value} not found for service {service_name} in cluster {cluster_arn}. Skipping service.\n")
+                            logger.warning(f"{Fore.RED}Tag value {service_tag_value} not found for service {service_name} in cluster {cluster_arn}. Skipping service.{Style.RESET_ALL}\n")
 
     except ecs_client.exceptions.ClientError as e:
         error_message = e.response.get('Error', {}).get('Message')
@@ -91,4 +92,4 @@ if __name__ == "__main__":
 
     start_services_by_tags(clusters)
 
-    print("\nOperation finished.")
+    print("\nOperation ended.")
