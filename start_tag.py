@@ -47,7 +47,7 @@ def start_services_by_tags(clusters: list[dict]) -> None:
 
                     for service_tag_value in service_tags.values():
                         if service_tag_value is not None:
-                            desired_count = services.get(service_tag_value, 1)
+                            desired_count = services.get(service_tag_value, 0)
 
                             ecs_client.update_service(
                                 cluster=cluster_arn,
